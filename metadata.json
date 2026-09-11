@@ -1,0 +1,10 @@
+{
+  "name": "Remix MindBridge 360",
+  "description": "A privacy-first, non-clinical student wellbeing platform for Indian college students with an expressive companion, peer support, and aggregated campus insights.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

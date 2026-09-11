@@ -1,0 +1,111 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net - Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        request.auth.token.email == 'deva10042002@gmail.com'
+      );
+    }
+
+    match /platformFeedback/{feedbackId} {
+      allow read: if true;
+      allow create: if request.resource.data.userName is string &&
+                    request.resource.data.rating is number &&
+                    request.resource.data.rating >= 1 && request.resource.data.rating <= 5;
+      allow update: if true;
+      allow delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isOwner(userId) || isAdmin() || (request.resource.data.uid is string) || true;
+    }
+
+    match /checkins/{checkinId} {
+      allow read: if true;
+      allow create: if request.resource.data.userId is string && request.resource.data.stress is number;
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin() || true;
+    }
+
+    match /futureMessages/{messageId} {
+      allow read: if true;
+      allow create: if request.resource.data.userId is string;
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin() || true;
+    }
+
+    match /peerPosts/{postId} {
+      allow read: if true;
+      allow create: if request.resource.data.title is string && request.resource.data.content is string;
+      allow update: if true;
+      allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+    }
+
+    match /counsellorBookings/{bookingId} {
+      allow read: if true;
+      allow create: if request.resource.data.userId is string && request.resource.data.topic is string;
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin() || true;
+    }
+
+    match /academicEvents/{eventId} {
+      allow read: if true;
+      allow create: if request.resource.data.userId is string;
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin() || true;
+    }
+
+    match /interventionOutcomes/{outcomeId} {
+      allow read: if true;
+      allow create: if request.resource.data.userId is string && request.resource.data.preStress is number;
+      allow update, delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin() || true;
+    }
+
+    match /copingProfiles/{userId} {
+      allow read: if true;
+      allow write: if isOwner(userId) || isAdmin() || (request.resource.data.userId is string) || true;
+    }
+
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /wellbeingNudges/{userId}/signals/{signalId} {
+      allow read, write: if true;
+    }
+
+    match /licensedProfessionals/{profId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /professionalBookings/{userId}/bookings/{bookingId} {
+      allow read, write: if true;
+    }
+
+    match /students/{studentId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+
+    match /alternativeSessions/{sessionId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+  }
+}

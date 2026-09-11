@@ -1,0 +1,324 @@
+{
+  "entities": {
+    "users": {
+      "title": "Users",
+      "description": "User profile with roles, department, year, preferences, and companion configuration",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "studentId": { "type": "string" },
+        "department": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "isHostel": { "type": "boolean" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "volunteer", "counsellor", "admin"] },
+        "language": { "type": "string", "enum": ["en", "ta", "tanglish"] },
+        "theme": { "type": "string", "enum": ["light", "dark"] },
+        "onboarded": { "type": "boolean" },
+        "companion": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "lastActive": { "type": "string" }
+      },
+      "required": ["uid"]
+    },
+    "checkins": {
+      "title": "Checkins",
+      "description": "Daily emotional check-ins, mood ratings, and voice journals",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "dateStr": { "type": "string" },
+        "sleep": { "type": "number" },
+        "stress": { "type": "number" },
+        "energy": { "type": "number" },
+        "social": { "type": "number" },
+        "workload": { "type": "number" },
+        "journalNote": { "type": "string" },
+        "isQuietPulse": { "type": "boolean" },
+        "quietPulseMood": { "type": "string" },
+        "streakDay": { "type": "number" }
+      },
+      "required": ["userId", "timestamp", "stress"]
+    },
+    "futureMessages": {
+      "title": "Future Messages",
+      "description": "Future self time-capsule encouragement letters",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "triggerTag": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "openedAt": { "type": "string" },
+        "isOpened": { "type": "boolean" }
+      },
+      "required": ["userId", "title", "content"]
+    },
+    "peerPosts": {
+      "title": "Peer Posts",
+      "description": "Peer support community posts, replies, and anonymous empathy",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "room": { "type": "string" },
+        "authorPseudonym": { "type": "string" },
+        "isVolunteer": { "type": "boolean" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "upvotes": { "type": "number" },
+        "helpfulCount": { "type": "number" },
+        "replies": { "type": "array" },
+        "flaggedForReview": { "type": "boolean" },
+        "flagReason": { "type": "string" },
+        "flaggedBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["room", "authorPseudonym", "title", "content"]
+    },
+    "counsellorBookings": {
+      "title": "Counsellor Bookings",
+      "description": "Confidential campus wellness and counsellor appointments",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "urgency": { "type": "string" },
+        "topic": { "type": "string" },
+        "slotTime": { "type": "string" },
+        "counsellorName": { "type": "string" },
+        "counsellorTitle": { "type": "string" },
+        "mode": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "estimatedWaitMinutes": { "type": "number" }
+      },
+      "required": ["userId", "topic", "slotTime", "counsellorName"]
+    },
+    "academicEvents": {
+      "title": "Academic Events",
+      "description": "Upcoming internal tests, exams, submissions, and deadlines",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "dateStr": { "type": "string" },
+        "daysRemaining": { "type": "number" },
+        "weight": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "title", "dateStr"]
+    },
+    "interventionOutcomes": {
+      "title": "Intervention Outcomes",
+      "description": "Pre and post stress outcome delta measurements from relaxation sessions",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "interventionType": { "type": "string" },
+        "interventionName": { "type": "string" },
+        "preStress": { "type": "number" },
+        "postStress": { "type": "number" },
+        "delta": { "type": "number" },
+        "timestamp": { "type": "string" },
+        "dateStr": { "type": "string" },
+        "feedback": { "type": "string" },
+        "contextTag": { "type": "string" },
+        "durationSeconds": { "type": "number" }
+      },
+      "required": ["userId", "interventionType", "preStress", "postStress"]
+    },
+    "copingProfiles": {
+      "title": "Coping Profiles",
+      "description": "Student tailored coping strategies and stress response profiles",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "dominantStressor": { "type": "string" },
+        "preferredPacing": { "type": "string" },
+        "strategies": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    },
+    "admins": {
+      "title": "Admins",
+      "description": "Authorized institutional wellness administration accounts",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "institution": { "type": "string" },
+        "role": { "type": "string" },
+        "verifiedAt": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "wellbeingNudges": {
+      "title": "Wellbeing Nudges",
+      "description": "Student private observable wellbeing signal patterns and check-in nudges",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "overallScore": { "type": "number" },
+        "signals": { "type": "array" },
+        "primaryContext": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["studentId"]
+    },
+    "licensedProfessionals": {
+      "title": "Licensed Professionals",
+      "description": "Vetted psychiatrist and psychologist partner directory",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "licenseNumber": { "type": "string" },
+        "verifiedBy": { "type": "string" }
+      },
+      "required": ["name", "licenseNumber"]
+    },
+    "professionalBookings": {
+      "title": "Professional Bookings",
+      "description": "Student teleconsultation booking records",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "professionalId": { "type": "string" },
+        "scheduledDate": { "type": "string" },
+        "scheduledTime": { "type": "string" },
+        "intakeNoteInStudentWords": { "type": "string" }
+      },
+      "required": ["studentId", "professionalId"]
+    },
+    "platformFeedback": {
+      "title": "Platform Feedback",
+      "description": "Real-time user & judge evaluation reviews, star ratings, and feature feedback",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string" },
+        "rating": { "type": "number" },
+        "category": { "type": "string" },
+        "feedbackText": { "type": "string" },
+        "highlightFeature": { "type": "string" },
+        "reactionsCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userName", "userRole", "rating", "feedbackText"]
+    },
+    "students": {
+      "title": "Students",
+      "description": "Enrolled student registry with university student ID, department, year, and app usage effectiveness metrics",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "department": { "type": "string" },
+        "year": { "type": "string" },
+        "batch": { "type": "string" },
+        "appUsageMinutes": { "type": "number" },
+        "sessionsCompleted": { "type": "number" },
+        "effectivenessScore": { "type": "number" },
+        "primaryToolUsed": { "type": "string" },
+        "preStressAvg": { "type": "number" },
+        "postStressAvg": { "type": "number" },
+        "stressDelta": { "type": "number" },
+        "currentStatus": { "type": "string" },
+        "academicStressor": { "type": "string" },
+        "registeredAt": { "type": "string" },
+        "lastActive": { "type": "string" },
+        "verifiedStudent": { "type": "boolean" }
+      },
+      "required": ["studentId", "name", "department"]
+    },
+    "alternativeSessions": {
+      "title": "Alternative Sessions",
+      "description": "Institutional alternative session suggestions and academic friction interventions",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "targetCohort": { "type": "string" },
+        "triggerReason": { "type": "string" },
+        "originalSchedule": { "type": "string" },
+        "suggestedAlternative": { "type": "string" },
+        "expectedBenefit": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending_approval", "approved_broadcasted", "scheduled", "completed"] },
+        "category": { "type": "string" },
+        "scheduledDate": { "type": "string" },
+        "approvedBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "department", "suggestedAlternative"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "students",
+      "description": "Real-time enrolled student records and app effectiveness"
+    },
+    "/alternativeSessions/{sessionId}": {
+      "schema": "alternativeSessions",
+      "description": "Adaptive alternative session suggestions and schedule modifications"
+    },
+    "/platformFeedback/{feedbackId}": {
+      "schema": "platformFeedback",
+      "description": "Real-time live judge ratings and community feedback"
+    },
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profiles and settings"
+    },
+    "/checkins/{checkinId}": {
+      "schema": "checkins",
+      "description": "Student emotional checkins"
+    },
+    "/futureMessages/{messageId}": {
+      "schema": "futureMessages",
+      "description": "Student future self letters"
+    },
+    "/peerPosts/{postId}": {
+      "schema": "peerPosts",
+      "description": "Peer support community posts"
+    },
+    "/counsellorBookings/{bookingId}": {
+      "schema": "counsellorBookings",
+      "description": "Counsellor confidential appointments"
+    },
+    "/academicEvents/{eventId}": {
+      "schema": "academicEvents",
+      "description": "Student academic milestones and exams"
+    },
+    "/interventionOutcomes/{outcomeId}": {
+      "schema": "interventionOutcomes",
+      "description": "Pre and post relaxation delta outcomes"
+    },
+    "/copingProfiles/{userId}": {
+      "schema": "copingProfiles",
+      "description": "Student personalized coping strategies"
+    },
+    "/admins/{adminId}": {
+      "schema": "admins",
+      "description": "Verified campus wellness administrators"
+    },
+    "/wellbeingNudges/{userId}/signals/{signalId}": {
+      "schema": "wellbeingNudges",
+      "description": "Private observable wellbeing signals for the student only"
+    },
+    "/licensedProfessionals/{profId}": {
+      "schema": "licensedProfessionals",
+      "description": "Directory of verified psychiatrists and psychologists"
+    },
+    "/professionalBookings/{userId}/bookings/{bookingId}": {
+      "schema": "professionalBookings",
+      "description": "Student private teleconsultation bookings"
+    }
+  }
+}
